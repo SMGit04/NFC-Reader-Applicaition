@@ -13,21 +13,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NfcApplication"
         tools:targetApi="31">
+
+        <!-- Your Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.NfcApplication">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+
         </activity>
+
+        <!-- Your Service -->
+        <service
+            android:name=".Services.CardValidationService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".Services.EncryptionService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
