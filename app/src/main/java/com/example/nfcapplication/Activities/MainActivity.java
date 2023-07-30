@@ -1,110 +1,106 @@
 package com.example.nfcapplication.Activities;
 
-import android.app.PendingIntent;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.Ndef;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nfcapplication.Interfaces.NFCListener;
+import com.example.nfcapplication.Models.TransactionDetailsModel;
 import com.example.nfcapplication.R;
+import com.example.nfcapplication.Remote.IRetrofitClient;
+import com.example.nfcapplication.Remote.RetrofitClient;
+import com.example.nfcapplication.Services.NFCService;
+import com.google.gson.Gson;
 
-import java.io.UnsupportedEncodingException;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NFCListener {
     NfcAdapter nfcAdapter;
-    PendingIntent pendingIntent;
-    IntentFilter writingTagFilters[];
-    private String[][] techLists;
-    Tag myTag;
-    String text = "";
+    private NFCService nfcService;
     TextView nfc_contents;
-
+    private Button enterButton;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         nfc_contents = findViewById(R.id.displayTextView);
+        enterButton = findViewById(R.id.enterButton);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
+
+        if (NfcCapable()) return;
+        nfcService = new NFCService(this, MainActivity.this::onTagRead);
+        nfcService.onTagDetected(getIntent());
+
+        TransactionDetailsModel transactionDetails = createSampleTransactionDetails();
+        String jsonDataFromNFC = new Gson().toJson(transactionDetails);
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendData(jsonDataFromNFC);
+            }
+        });
+    }
+
+    private boolean NfcCapable() {
         if (nfcAdapter == null) {
             Toast.makeText(this, "NFC is not supported on this device.", Toast.LENGTH_LONG).show();
             finish();
-            return;
+            return true;
         }
 
         if (!nfcAdapter.isEnabled()) {
             Toast.makeText(this, "NFC is disabled.", Toast.LENGTH_LONG).show();
             finish();
-            return;
+            return true;
         }
-        onTagDetected();
+        return false;
     }
 
-    private void onTagDetected() {
-
-        readFromIntent(getIntent());
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
-        IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
-        writingTagFilters = new IntentFilter[]{tagDetected};
-
-//        techLists = new String[][]{
-//                {Ndef.class.getName()},
-//                {NfcA.class.getName()}
-//        };
+    private TransactionDetailsModel createSampleTransactionDetails() {
+        // Simulate the TransactionDetailsModel with sample data
+        TransactionDetailsModel transactionDetails = new TransactionDetailsModel();
+        transactionDetails.setName("John");
+        transactionDetails.setSurname("Doe");
+        transactionDetails.setIDNumber("123456789");
+        transactionDetails.setCardNumber("1234567890123456");
+        transactionDetails.setAccountNumber("1234567890");
+        transactionDetails.setExpiryDate("20230705");
+        transactionDetails.setAmount(100);
+        transactionDetails.setCVV("123");
+        transactionDetails.setPIN("1234");
+        return transactionDetails;
     }
 
-    private void readFromIntent(Intent intent) {
-        String action = intent.getAction();
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-            Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage[] messages = null;
-            if (rawMessages != null) {
-                messages = new NdefMessage[rawMessages.length];
-                for (int i = 0; i < rawMessages.length; i++)
-                    messages[i] = (NdefMessage) rawMessages[i];
-            }
-            buildTagViews(messages);
-        }
-    }
+    private void sendData(String jsonData) {
 
-    private void buildTagViews(NdefMessage[] ndefMessages) {
-        if (ndefMessages == null || ndefMessages.length == 0) return;
-        byte[] payload = ndefMessages[0].getRecords()[0].getPayload();
-        String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16"; // Get the Text Encoding
-        int languageCodeLength = payload[0] & 51; // Get the Language Code, e.g. "en"
+        progressDialog.setMessage("Processing...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
-        try {
-            // Get the Text
-            text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
-        } catch (UnsupportedEncodingException e) {
-            Log.e("UnsupportedEncodingException", e.toString());
-        }
-        nfc_contents.setText(text);
+        // Creates the Retrofit client and service
+        IRetrofitClient iRetrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
+
+
+        // Parse the JSON data
+        Gson gson = new Gson();
+        TransactionDetailsModel transactionDetailsModel = gson.fromJson(jsonData, TransactionDetailsModel.class);
+
+        // final TransactionDetailsModel transactionDetailsModel = new TransactionDetailsModel();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-       // setIntent(intent);
-        readFromIntent(intent);
-        if (intent.getAction() != null) {
-            myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        }
+        nfcService.onNewIntent(intent);
     }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -112,7 +108,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        // nfcAdapter.enableForegroundDispatch(this, pendingIntent, writingTagFilters, techLists);
         super.onResume();
     }
+
+    @Override
+    public void onTagRead(String text) {
+        nfc_contents.setText(text);
+
+    }
+
 }

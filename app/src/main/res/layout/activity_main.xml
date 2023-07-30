@@ -1,139 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:padding="16dp"
+    android:background="#f4f4f4">
 
-    <TextView
-        android:id="@+id/displayTextView"
-        android:layout_width="359dp"
-        android:layout_height="228dp"
-        android:padding="16dp"
-        android:text="Welcome!"
-        android:textSize="24sp" />
+    <!-- Display area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="413dp"
+        android:layout_marginBottom="16dp"
+        android:background="#000"
+        android:orientation="vertical"
+        android:padding="8dp">
 
+        <TextView
+            android:id="@+id/displayTextView"
+            android:layout_width="match_parent"
+            android:layout_height="139dp"
+            android:padding="8dp"
+            android:text="Tap or Insert card"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:background="#ffffff" />-->
+
+        <TextView
+            android:id="@+id/totalTextView"
+            android:layout_width="match_parent"
+            android:layout_height="222dp"
+            android:padding="8dp"
+            android:text="Total: R0.00"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Keypad and actions -->
     <GridLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:rowCount="4"
-
+        android:padding="16dp"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp">
+        android:alignmentMode="alignBounds">
 
+        <!-- Number buttons -->
+        <!-- You can continue with the rest of the buttons as earlier -->
+        <!-- Example for the first three buttons -->
         <Button
             android:id="@+id/button1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="1"
-            android:layout_column="0"
-            android:layout_row="0"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="2"
-            android:layout_column="1"
-            android:layout_row="0"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay"
+            android:layout_marginStart="8dp"/>
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="3"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="4"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="5"
-            android:layout_column="1"
-            android:layout_row="1"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button6"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="6"
-            android:layout_column="2"
-            android:layout_row="1"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button7"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="7"
-            android:layout_column="0"
-            android:layout_row="2"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button8"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="8"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button9"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="9"
-            android:layout_column="2"
-            android:layout_row="2"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/cancelButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="Cancel"
-            android:layout_column="0"
-            android:layout_row="3"
-            android:textColor="@android:color/black"
-            android:background="@android:color/holo_orange_light"
-            android:onClick="cancel"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/button0"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="0"
-            android:layout_toRightOf="@id/button1"
-            android:layout_alignBaseline="@id/cancelButton"
-            android:onClick="appendToDisplay"/>
+            android:onClick="appendToDisplay" />
 
         <Button
             android:id="@+id/enterButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
             android:text="Enter"
-            android:textColor="@android:color/black"
-            android:background="@android:color/holo_green_light"
-            android:layout_toRightOf="@id/button9"
-            android:layout_alignBaseline="@id/cancelButton"
-            android:onClick="enter"/>
+            android:onClick="appendToDisplay"
+            android:layout_marginStart="8dp"/>
+
+        <!-- Rest of the buttons, similar to above -->
 
     </GridLayout>
 </LinearLayout>

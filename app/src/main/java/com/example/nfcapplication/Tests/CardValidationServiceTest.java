@@ -1,12 +1,15 @@
 package com.example.nfcapplication.Tests;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.example.nfcapplication.Models.CardResultModel;
 import com.example.nfcapplication.Services.CardValidationService;
 import com.example.nfcapplication.Services.ErrorCodesService;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class CardValidationServiceTest {
 
