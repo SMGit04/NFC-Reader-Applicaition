@@ -6,8 +6,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitClient {
+
     private static Retrofit retrofit;
 
+
+    // https://localhost:7126/api/ApproveOrDeclineTransaction
+    // http://10.0.2.2:5174/api/
+    // http://192.168.88.249:5174/api/
+    // http://192.168.88.249:5174/api/
     public static Retrofit getRetrofit() {
 
         if (retrofit == null)
@@ -18,5 +24,7 @@ public class RetrofitClient {
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         return retrofit;
+
+        // TODO: Configure baseURL to work with a real device
     }
 }

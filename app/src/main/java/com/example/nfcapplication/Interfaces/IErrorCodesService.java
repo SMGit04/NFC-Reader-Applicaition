@@ -1,4 +1,4 @@
-package com.example.nfcapplication.Interface;
+package com.example.nfcapplication.Interfaces;
 
 import com.example.nfcapplication.Enums.ErrorCodes;
 

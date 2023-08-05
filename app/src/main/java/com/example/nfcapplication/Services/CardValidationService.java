@@ -1,7 +1,7 @@
 package com.example.nfcapplication.Services;
 
 import com.example.nfcapplication.Enums.ErrorCodes;
-import com.example.nfcapplication.Interface.IErrorCodesService;
+import com.example.nfcapplication.Interfaces.IErrorCodesService;
 import com.example.nfcapplication.Models.CardResultModel;
 
 public class CardValidationService {

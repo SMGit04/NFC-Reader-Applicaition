@@ -4,34 +4,40 @@ import com.google.gson.annotations.SerializedName;
 
 public class TransactionDetailsModel {
 
-    @SerializedName("Name")
+    @SerializedName("name")
     private String name;
 
-    @SerializedName("Surname")
+    @SerializedName("surname")
     private String surname;
 
-    @SerializedName("IDNumber")
+    @SerializedName("idNumber")
     private String IDNumber;
 
-    @SerializedName("CardNumber")
+    @SerializedName("cardNumber")
     private String cardNumber;
 
-    @SerializedName("AccountNumber")
+    @SerializedName("accountNumber")
     private String accountNumber;
 
-    @SerializedName("ExpiryDate")
+    @SerializedName("expiryDate")
     private String expiryDate;
 
-    @SerializedName("Amount")
+    @SerializedName("amount")
     private int amount;
 
-    @SerializedName("CVV")
+    @SerializedName("cvv")
     private String CVV;
 
-    @SerializedName("PIN")
+    @SerializedName("pin")
     private String PIN;
+    @SerializedName("status")
+    private String status;
+
 
     public TransactionDetailsModel() {
+    }
+
+    public TransactionDetailsModel(String idNumber) {
     }
 
     public TransactionDetailsModel(String name, String surname, String cardNumber, String expiryDate, String accountNumber, String CVV, int amount, String PIN) {
@@ -67,6 +73,22 @@ public class TransactionDetailsModel {
 
     public String getCvv() {
         return CVV;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getCVV() {
+        return CVV;
+    }
+
+    public String getPIN() {
+        return PIN;
     }
 
     public void setName(String name) {
@@ -105,19 +127,12 @@ public class TransactionDetailsModel {
         this.PIN = PIN;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getIDNumber() {
         return IDNumber;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public String getCVV() {
-        return CVV;
-    }
-
-    public String getPIN() {
-        return PIN;
-    }
 }

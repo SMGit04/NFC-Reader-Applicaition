@@ -4,6 +4,7 @@ public class CardResultModel {
 
     private boolean isValidCard;
     private String responseMessage;
+
     public CardResultModel(boolean isValidCard) {
         this.isValidCard = isValidCard;
         this.responseMessage = "";

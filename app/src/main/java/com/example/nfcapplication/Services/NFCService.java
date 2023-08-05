@@ -19,7 +19,7 @@ public class NFCService {
     Tag myTag;
     private final Context context;
     private final NFCListener listener;
-    private NfcAdapter nfcAdapter;
+    private final NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private IntentFilter[] writingTagFilters;
 
@@ -35,8 +35,7 @@ public class NFCService {
             return;
         }
         readFromIntent(intent);
-        pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, context.getClass())
-                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
+        pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, context.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
         IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
         tagDetected.addCategory(Intent.CATEGORY_DEFAULT);
         writingTagFilters = new IntentFilter[]{tagDetected};
@@ -44,9 +43,7 @@ public class NFCService {
 
     public void readFromIntent(Intent intent) {
         String action = intent.getAction();
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
             Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             NdefMessage[] messages = null;
             if (rawMessages != null) {
@@ -80,9 +77,5 @@ public class NFCService {
         if (intent.getAction() != null) {
             myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         }
-    }
-
-    public boolean isNFCEnabled() {
-        return nfcAdapter != null && nfcAdapter.isEnabled();
     }
 }
