@@ -23,7 +23,7 @@ public class TransactionDetailsModel {
     private String expiryDate;
 
     @SerializedName("amount")
-    private int amount;
+    private static int amount;
 
     @SerializedName("cvv")
     private String CVV;
@@ -42,7 +42,7 @@ public class TransactionDetailsModel {
 
     public TransactionDetailsModel(String name, String surname, String cardNumber, String expiryDate, String accountNumber, String CVV, int amount, String PIN) {
         this.name = name;
-        this.amount = amount;
+        TransactionDetailsModel.amount = amount;
         this.surname = surname;
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
@@ -75,8 +75,8 @@ public class TransactionDetailsModel {
         return CVV;
     }
 
-    public int getAmount() {
-        return amount;
+    public static int getAmount() {
+        return amount = (int) (Math.random() * (100 - 10 + 1) + 10);
     }
 
     public String getStatus() {
@@ -113,10 +113,6 @@ public class TransactionDetailsModel {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public void setCVV(String CVV) {

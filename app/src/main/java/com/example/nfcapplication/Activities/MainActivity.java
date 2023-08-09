@@ -27,7 +27,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements NFCListener {
     NfcAdapter nfcAdapter;
     private NFCService nfcService;
-    TextView nfc_contents;
+    TextView screenDisplay;
+    TextView amountToBePayed;
     private Button enterButton;
     private ProgressDialog progressDialog;
 
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        nfc_contents = findViewById(R.id.displayTextView);
+        screenDisplay = findViewById(R.id.displayTextView);
+        amountToBePayed = findViewById(R.id.totalTextView);
         enterButton = findViewById(R.id.enterButton);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -43,9 +45,9 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         progressDialog = new ProgressDialog(this);
 
 
-        if (NfcCapable()) return;
-        nfcService = new NFCService(this, MainActivity.this::onTagRead);
-        nfcService.onTagDetected(getIntent());
+//        if (NfcCapable()) return;
+//        nfcService = new NFCService(this, MainActivity.this::onTagRead);
+//        nfcService.onTagDetected(getIntent());
 
         sendData();
         // getData();
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         transactionDetails.setCardNumber("657835675677");
         transactionDetails.setAccountNumber("56676576");
         transactionDetails.setExpiryDate("2023-05-04");
-        transactionDetails.setAmount(1000);
+       // transactionDetails.setAmount();
         transactionDetails.setCVV("987");
         transactionDetails.setPIN("5667");
         return transactionDetails;
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
 
     @Override
     public void onTagRead(String text) {
-        nfc_contents.setText(text);
+        screenDisplay.setText(text);
 
     }
 

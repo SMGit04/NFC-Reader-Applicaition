@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.nfcapplication.Interfaces.NFCListener;
+import com.example.nfcapplication.Models.TransactionDetailsModel;
 
 import java.io.UnsupportedEncodingException;
 
@@ -19,6 +20,7 @@ public class NFCService {
     Tag myTag;
     private final Context context;
     private final NFCListener listener;
+    private final String SCREEN_DISPLAY = "Authorize transaction of: ";
     private final NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private IntentFilter[] writingTagFilters;
@@ -56,17 +58,16 @@ public class NFCService {
     }
 
     private void buildTagViews(NdefMessage[] ndefMessages) {
+
+       // TransactionDetailsModel transactionDetails = new TransactionDetailsModel();
         if (ndefMessages == null || ndefMessages.length == 0) return;
         byte[] payload = ndefMessages[0].getRecords()[0].getPayload();
         String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16"; // Get the Text Encoding
         int languageCodeLength = payload[0] & 51; // Get the Language Code, e.g. "en"
 
-        try {
-            // Get the Text
-            text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
-        } catch (UnsupportedEncodingException e) {
-            Log.e("UnsupportedEncodingException", e.toString());
-        }
+        // Get the Text
+        // text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
+        text = SCREEN_DISPLAY + "\n" + TransactionDetailsModel.getAmount();
         listener.onTagRead(text);
     }
 
