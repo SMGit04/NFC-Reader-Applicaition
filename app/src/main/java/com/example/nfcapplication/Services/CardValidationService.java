@@ -5,7 +5,7 @@ import com.example.nfcapplication.Interfaces.IErrorCodesService;
 import com.example.nfcapplication.Models.CardResultModel;
 
 public class CardValidationService {
-    int digit;
+
     private final IErrorCodesService errorCodesService;
 
     public CardValidationService(IErrorCodesService errorCodesService) {
@@ -23,7 +23,8 @@ public class CardValidationService {
     }
 
     private boolean luhnAlgorithm(String cardNumber) {
-        int total = 0;
+        int digit, total = 0;
+      //  int digit;
         boolean isSecondDigit = false;
 
         for (int i = cardNumber.length() - 1; i >= 0; i--) {
