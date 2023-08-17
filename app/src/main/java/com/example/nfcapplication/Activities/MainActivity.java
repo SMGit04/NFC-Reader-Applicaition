@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         screenDisplay = findViewById(R.id.displayTextView);
-        amountToBePayed = findViewById(R.id.totalTextView);
+      //  amountToBePayed = findViewById(R.id.totalTextView);
         enterButton = findViewById(R.id.enterButton);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         progressDialog = new ProgressDialog(this);
 
 
-//        if (NfcCapable()) return;
-//        nfcService = new NFCService(this, MainActivity.this::onTagRead);
-//        nfcService.onTagDetected(getIntent());
+        if (NfcCapable()) return;
+        nfcService = new NFCService(this, MainActivity.this::onTagRead);
+        nfcService.onTagDetected(getIntent());
 
-        sendData();
+       // sendData();
         // getData();
     }
 
@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         });
     }
 
+    // Simulate the TransactionDetailsModel with sample data
     private TransactionDetailsModel createSampleTransactionDetails() {
-        // Simulate the TransactionDetailsModel with sample data
         TransactionDetailsModel transactionDetails = new TransactionDetailsModel();
         transactionDetails.setName("Isaac");
         transactionDetails.setSurname("Newton");
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         Log.d("MainActivity", "Card Number: " + transactionDetails.getCardNumber());
         Log.d("MainActivity", "Account Number: " + transactionDetails.getAccountNumber());
         Log.d("MainActivity", "Expiry Date: " + transactionDetails.getExpiryDate());
-        Log.d("MainActivity", "Amount: " + transactionDetails.getAmount());
+        Log.d("MainActivity", "Amount: " + TransactionDetailsModel.getAmount());
         Log.d("MainActivity", "CVV: " + transactionDetails.getCVV());
         Log.d("MainActivity", "PIN: " + transactionDetails.getPIN());
 

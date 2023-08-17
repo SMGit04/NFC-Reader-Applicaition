@@ -75,8 +75,9 @@ public class TransactionDetailsModel {
         return CVV;
     }
 
-    public static int getAmount() {
-        return amount = (int) (Math.random() * (100 - 10 + 1) + 10);
+    public static double getAmount() {
+        double randomValue = Math.random() * (100 - 10 + 1) + 10;
+        return Math.round(randomValue * 100.0) / 100.0;
     }
 
     public String getStatus() {

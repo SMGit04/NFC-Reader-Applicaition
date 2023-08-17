@@ -30,14 +30,15 @@
         <!--            android:layout_height="1dp"-->
         <!--            android:background="#ffffff" />-->
 
-        <TextView
-            android:id="@+id/totalTextView"
-            android:layout_width="match_parent"
-            android:layout_height="158dp"
-            android:padding="8dp"
-            android:text="Total: R0.00"
-            android:textColor="#fff"
-            android:textSize="18sp" />
+<!--        <TextView-->
+<!--            android:id="@+id/totalTextView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="158dp"-->
+<!--            android:padding="8dp"-->
+<!--            android:text="Total: R0.00"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="18sp" -->
+<!--            />-->
     </LinearLayout>
 
     <!-- Keypad and actions -->

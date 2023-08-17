@@ -67,7 +67,7 @@ public class NFCService {
 
         // Get the Text
         // text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
-        text = SCREEN_DISPLAY + "\n" + TransactionDetailsModel.getAmount();
+        text = SCREEN_DISPLAY + "\n\n" + "R" + TransactionDetailsModel.getAmount();
         listener.onTagRead(text);
     }
 
