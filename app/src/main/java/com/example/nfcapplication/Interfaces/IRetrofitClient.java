@@ -11,9 +11,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface IRetrofitClient {
-    // https://localhost:7126/api/ApproveOrDeclineTransaction
-    // https://localhost:7126/api/GetUser/4301049898686098'
-
     @POST("/api/ApproveOrDeclineTransaction")
     Call<TransactionDetailsModel> postTransactionDetails(@Body TransactionDetailsModel transactionDetailsModel);
 

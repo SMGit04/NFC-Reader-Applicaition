@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         progressDialog = new ProgressDialog(this);
 
 
-        if (NfcCapable()) return;
+//        if (NfcCapable()) return;
         nfcService = new NFCService(this, MainActivity.this::onTagRead);
         nfcService.onTagDetected(getIntent());
 
-       // sendData();
-        // getData();
+        sendData();
+       //  getData();
     }
 
     private void sendData() {
@@ -126,6 +126,13 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         transactionDetails.setPIN("5667");
         return transactionDetails;
     }
+
+//    //
+//    -- Narrate the story mimicking the journey a user would
+//    -- Allow "Cashier" to input the amount
+//    -- push notifications !!!
+//    //
+
 
     private void printTransactionDetails(TransactionDetailsModel transactionDetails) {
         Log.d("MainActivity", "Name: " + transactionDetails.getName());

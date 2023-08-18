@@ -26,5 +26,6 @@ public class RetrofitClient {
         return retrofit;
 
         // TODO: Configure baseURL to work with a real device
+        // Use wifi access point: use azure cloud from UJ
     }
 }
