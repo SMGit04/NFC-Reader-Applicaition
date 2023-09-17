@@ -1,6 +1,7 @@
 package com.example.nfcapplication.Interfaces;
 
 import com.example.nfcapplication.Models.DataModel;
+import com.example.nfcapplication.Models.SendNotificationModel;
 import com.example.nfcapplication.Models.TransactionDetailsModel;
 
 import retrofit2.Call;
@@ -14,6 +15,6 @@ public interface IRetrofitClient {
     @POST("/api/ApproveOrDeclineTransaction")
     Call<TransactionDetailsModel> postTransactionDetails(@Body TransactionDetailsModel transactionDetailsModel);
 
-    @GET("/api/GetUser/{IDNumber}")
-    Call<DataModel> getUSer(@Path("IDNumber") String userID);
+    @POST("/api/notification")
+    Call<SendNotificationModel> sendTransactionRequestNotification();
 }

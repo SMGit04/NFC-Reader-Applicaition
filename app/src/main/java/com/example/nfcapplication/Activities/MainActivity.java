@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nfcapplication.Interfaces.NFCListener;
 import com.example.nfcapplication.Models.DataModel;
+import com.example.nfcapplication.Models.SendNotificationModel;
 import com.example.nfcapplication.Models.TransactionDetailsModel;
 import com.example.nfcapplication.R;
 import com.example.nfcapplication.Interfaces.IRetrofitClient;
@@ -45,14 +46,34 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         progressDialog = new ProgressDialog(this);
 
 
-//        if (NfcCapable()) return;
+//        if (nfcCapable()) return;
         nfcService = new NFCService(this, MainActivity.this::onTagRead);
         nfcService.onTagDetected(getIntent());
 
-        sendData();
-       //  getData();
+       // sendData();
+        sendTransactionNotification();
     }
 
+    private void sendTransactionNotification() {
+        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
+        Call<SendNotificationModel> modelCall = retrofitClient.sendTransactionRequestNotification();
+
+        modelCall.enqueue(new Callback<SendNotificationModel>() {
+            @Override
+            public void onResponse(@NonNull Call<SendNotificationModel> call, @NonNull Response<SendNotificationModel> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, response.code() + "Failure Sending Message", Toast.LENGTH_LONG).show();
+                }
+                SendNotificationModel responseStatus = response.body();
+              //  Toast.makeText(MainActivity.this, response.code() + " Message Sent", Toast.LENGTH_LONG).show();
+                assert responseStatus != null;
+                Toast.makeText(MainActivity.this,responseStatus.getResponseMessage(), Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(@NonNull Call<SendNotificationModel> call, @NonNull Throwable t) {
+            }
+        });
+    }
     private void sendData() {
         IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
         Call<TransactionDetailsModel> modelCall = retrofitClient.postTransactionDetails(createSampleTransactionDetails());
@@ -81,37 +102,6 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         });
     }
 
-    private void getData() {
-        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
-        Call<DataModel> modelCall = retrofitClient.getUSer("4301049898686098");
-
-        modelCall.enqueue(new Callback<DataModel>() {
-            @Override
-            public void onResponse(@NonNull Call<DataModel> call, @NonNull Response<DataModel> response) {
-
-                if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(MainActivity.this, response.code() + " Response", Toast.LENGTH_LONG).show();
-                // Obtain the TransactionDetailsModel from the response
-                DataModel responseModel = response.body();
-                if (responseModel != null) {
-                    printTransactionDetails(responseModel);
-                    Toast.makeText(MainActivity.this, "Data retrieved: " + response.code(), Toast.LENGTH_LONG).show();
-                } else {
-                    Log.d("MainActivity", "Response body is null");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<DataModel> call, @NonNull Throwable t) {
-                Log.d("onFailure: ", t.getMessage());
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     // Simulate the TransactionDetailsModel with sample data
     private TransactionDetailsModel createSampleTransactionDetails() {
         TransactionDetailsModel transactionDetails = new TransactionDetailsModel();
@@ -130,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
 //    //
 //    -- Narrate the story mimicking the journey a user would
 //    -- Allow "Cashier" to input the amount
-//    -- push notifications !!!
 //    //
 
 
@@ -147,21 +136,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
 
     }
 
-    private void printTransactionDetails(DataModel transactionDetails) {
-        Log.d("MainActivity", "Name: " + transactionDetails.getName());
-        Log.d("MainActivity", "Surname: " + transactionDetails.getSurname());
-        Log.d("MainActivity", "ID Number: " + transactionDetails.getIDNumber());
-        Log.d("MainActivity", "Card Number: " + transactionDetails.getCardNumber());
-        Log.d("MainActivity", "Account Number: " + transactionDetails.getAccountNumber());
-        Log.d("MainActivity", "Expiry Date: " + transactionDetails.getExpiryDate());
-        Log.d("MainActivity", "Balance: " + transactionDetails.getBalance());
-        Log.d("MainActivity", "CVV: " + transactionDetails.getCVV());
-        Log.d("MainActivity", "PIN: " + transactionDetails.getPIN());
-
-    }
-
-
-    private boolean NfcCapable() {
+    private boolean nfcCapable() {
         if (nfcAdapter == null) {
             Toast.makeText(this, "NFC is not supported on this device.", Toast.LENGTH_LONG).show();
             finish();
