@@ -3,7 +3,7 @@
 //import static org.junit.Assert.assertNotNull;
 //
 //import com.example.nfcapplication.Interfaces.IRetrofitClient;
-//import com.example.nfcapplication.Models.SendNotificationModel;
+//import com.example.nfcapplication.Models.TransactionResponseModel;
 //import com.example.nfcapplication.Models.TransactionDetailsModel;
 //import com.example.nfcapplication.Remote.RetrofitClient;
 //
@@ -19,16 +19,16 @@
 //public class SendNotificaitionTest {
 //
 //    IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
-//    Call<SendNotificationModel> modelCall = retrofitClient.sendTransactionRequestNotification();
+//    Call<TransactionResponseModel> modelCall = retrofitClient.sendTransactionRequestNotification();
 //
 //    @Test
 //    public void testSendTransactionRequestNotification() throws IOException, IOException {
 //        // Prepare test data
 //        String text = "Test Notification Text";
-//        SendNotificationModel expectedResponse = new SendNotificationModel(); // Set your expected response here
+//        TransactionResponseModel expectedResponse = new TransactionResponseModel(); // Set your expected response here
 //
 //        // Create a mock Call object
-//        Call<SendNotificationModel> call = mock(Call.class);
+//        Call<TransactionResponseModel> call = mock(Call.class);
 //
 //        // Mock the behavior of yourApi.sendTransactionRequestNotification
 //        when(yourApi.sendTransactionRequestNotification(text)).thenReturn(call);
@@ -37,7 +37,7 @@
 //        when(call.execute()).thenReturn(Response.success(expectedResponse));
 //
 //        // Make the actual API call
-//        SendNotificationModel response = yourApiService.sendTransactionRequestNotification(text).execute().body();
+//        TransactionResponseModel response = yourApiService.sendTransactionRequestNotification(text).execute().body();
 //
 //        // Verify the response
 //        assertNotNull(response);

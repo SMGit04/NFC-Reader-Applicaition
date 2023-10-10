@@ -22,9 +22,11 @@ public class TransactionDetailsModel {
     @SerializedName("expiryDate")
     private String expiryDate;
 
-    @SerializedName("amount")
-    private static int amount;
+    @SerializedName("transactionAmount")
+    private double amount;
 
+    @SerializedName("merchantName")
+    private String merchantName;
     @SerializedName("cvv")
     private String CVV;
 
@@ -36,19 +38,18 @@ public class TransactionDetailsModel {
 
     public TransactionDetailsModel() {
     }
-
-    public TransactionDetailsModel(String idNumber) {
-    }
-
-    public TransactionDetailsModel(String name, String surname, String cardNumber, String expiryDate, String accountNumber, String CVV, int amount, String PIN) {
+    public TransactionDetailsModel(String idNumber) {}
+    public TransactionDetailsModel(String name, String surname, String IDNumber, String merchantName, String cardNumber, String accountNumber, String expiryDate, String CVV, String PIN, String status) {
         this.name = name;
-        TransactionDetailsModel.amount = amount;
         this.surname = surname;
+        this.IDNumber = IDNumber;
+        this.merchantName = merchantName;
         this.cardNumber = cardNumber;
-        this.expiryDate = expiryDate;
         this.accountNumber = accountNumber;
+        this.expiryDate = expiryDate;
         this.CVV = CVV;
         this.PIN = PIN;
+        this.status = status;
     }
 
     public String getName() {
@@ -92,6 +93,12 @@ public class TransactionDetailsModel {
         return PIN;
     }
 
+    public String getMerchantName() {
+        return merchantName;
+    }
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
     public void setName(String name) {
         this.name = name;
     }

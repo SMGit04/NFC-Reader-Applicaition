@@ -10,16 +10,13 @@ public class RetrofitClient {
     private static Retrofit retrofit;
 
 
-    // https://localhost:7126/api/ApproveOrDeclineTransaction
-    // http://10.0.2.2:5174/api/
-    // http://192.168.88.249:5174/api/
-    // http://192.168.88.249:5174/api/
+    // https://banksimulator.azurewebsites.net/api/Notification/notification
     public static Retrofit getRetrofit() {
 
         if (retrofit == null)
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:5174/api/")
-                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .baseUrl("https://banksimulator.azurewebsites.net/api/")
+                    //.addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
