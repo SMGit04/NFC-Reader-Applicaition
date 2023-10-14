@@ -2,7 +2,7 @@ package com.example.nfcapplication.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TransactionDetailsModel {
+public class TransactionRequestModel {
 
     @SerializedName("name")
     private String name;
@@ -32,14 +32,14 @@ public class TransactionDetailsModel {
 
     @SerializedName("pin")
     private String PIN;
-    @SerializedName("status")
-    private String status;
+    @SerializedName("isApproved")
+    boolean isApproved;
 
 
-    public TransactionDetailsModel() {
+    public TransactionRequestModel() {
     }
-    public TransactionDetailsModel(String idNumber) {}
-    public TransactionDetailsModel(String name, String surname, String IDNumber, String merchantName, String cardNumber, String accountNumber, String expiryDate, String CVV, String PIN, String status) {
+    public TransactionRequestModel(String idNumber) {}
+    public TransactionRequestModel(String name, String surname, String IDNumber, String merchantName, String cardNumber, String accountNumber, String expiryDate, String CVV, String PIN, boolean status) {
         this.name = name;
         this.surname = surname;
         this.IDNumber = IDNumber;
@@ -49,7 +49,7 @@ public class TransactionDetailsModel {
         this.expiryDate = expiryDate;
         this.CVV = CVV;
         this.PIN = PIN;
-        this.status = status;
+        this.isApproved = status;
     }
 
     public String getName() {
@@ -81,8 +81,8 @@ public class TransactionDetailsModel {
         return Math.round(randomValue * 100.0) / 100.0;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean getApproved() {
+        return isApproved;
     }
 
     public String getCVV() {
@@ -131,8 +131,8 @@ public class TransactionDetailsModel {
         this.PIN = PIN;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setApproved(boolean approved) {
+        this.isApproved = approved;
     }
 
     public String getIDNumber() {

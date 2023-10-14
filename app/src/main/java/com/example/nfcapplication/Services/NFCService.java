@@ -8,12 +8,9 @@ import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.example.nfcapplication.Interfaces.NFCListener;
-import com.example.nfcapplication.Models.TransactionDetailsModel;
-
-import java.io.UnsupportedEncodingException;
+import com.example.nfcapplication.Models.TransactionRequestModel;
 
 public class NFCService {
     String text = "";
@@ -59,7 +56,7 @@ public class NFCService {
 
     private void buildTagViews(NdefMessage[] ndefMessages) {
 
-       // TransactionDetailsModel transactionDetails = new TransactionDetailsModel();
+       // TransactionRequestModel transactionDetails = new TransactionRequestModel();
         if (ndefMessages == null || ndefMessages.length == 0) return;
         byte[] payload = ndefMessages[0].getRecords()[0].getPayload();
         String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16"; // Get the Text Encoding
@@ -67,7 +64,7 @@ public class NFCService {
 
         // Get the Text
         // text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
-        text = SCREEN_DISPLAY + "\n\n" + "R" + TransactionDetailsModel.getAmount();
+        text = SCREEN_DISPLAY + "\n\n" + "R" + TransactionRequestModel.getAmount();
         listener.onTagRead(text);
     }
 

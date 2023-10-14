@@ -15,14 +15,6 @@ public class CardResultModel {
         this.responseMessage = responseMessage;
     }
 
-    public void setValidCard(boolean validCard) {
-        isValidCard = validCard;
-    }
-
-    public void setResponseMessage(String responseMessage) {
-        this.responseMessage = responseMessage;
-    }
-
     public boolean isValid() {
         return isValidCard;
     }

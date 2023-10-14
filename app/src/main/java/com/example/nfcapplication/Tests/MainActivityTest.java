@@ -15,7 +15,7 @@
 //
 //import com.example.nfcapplication.Activities.MainActivity;
 //import com.example.nfcapplication.Interfaces.IRetrofitClient;
-//import com.example.nfcapplication.Models.TransactionDetailsModel;
+//import com.example.nfcapplication.Models.TransactionRequestModel;
 //
 //public class MainActivityTest {
 //
@@ -23,7 +23,7 @@
 //    private IRetrofitClient mockRetrofitClient;
 //
 //    @Mock
-//    private Call<TransactionDetailsModel> mockCall;
+//    private Call<TransactionRequestModel> mockCall;
 //
 //    private MainActivity mainActivity;
 //
@@ -40,13 +40,13 @@
 //    @Test
 //    public void testSendData_SuccessfulResponse() {
 //        // Mock a successful response
-//        TransactionDetailsModel mockResponse = new TransactionDetailsModel();
+//        TransactionRequestModel mockResponse = new TransactionRequestModel();
 //        mockResponse.setStatus("Success");
-//        Response<TransactionDetailsModel> successResponse = Response.success(mockResponse);
+//        Response<TransactionRequestModel> successResponse = Response.success(mockResponse);
 //
 //        // Configure the mock call to return the success response when enqueued
 //        doAnswer(invocation -> {
-//            Callback<TransactionDetailsModel> callback = invocation.getArgument(0);
+//            Callback<TransactionRequestModel> callback = invocation.getArgument(0);
 //            callback.onResponse(mockCall, successResponse);
 //            return null;
 //        }).when(mockCall).enqueue(any());
@@ -61,11 +61,11 @@
 //    @Test
 //    public void testSendData_UnsuccessfulResponse() {
 //        // Mock an unsuccessful response
-//        Response<TransactionDetailsModel> errorResponse = Response.error(404, mockResponseBody);
+//        Response<TransactionRequestModel> errorResponse = Response.error(404, mockResponseBody);
 //
 //        // Configure the mock call to return the error response when enqueued
 //        doAnswer(invocation -> {
-//            Callback<TransactionDetailsModel> callback = invocation.getArgument(0);
+//            Callback<TransactionRequestModel> callback = invocation.getArgument(0);
 //            callback.onResponse(mockCall, errorResponse);
 //            return null;
 //        }).when(mockCall).enqueue(any());

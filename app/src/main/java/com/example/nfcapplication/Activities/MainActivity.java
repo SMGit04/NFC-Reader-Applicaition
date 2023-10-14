@@ -12,15 +12,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.nfcapplication.Interfaces.NFCListener;
-import com.example.nfcapplication.Models.TransactionResponseModel;
-import com.example.nfcapplication.Models.TransactionDetailsModel;
-import com.example.nfcapplication.R;
 import com.example.nfcapplication.Interfaces.IRetrofitClient;
+import com.example.nfcapplication.Interfaces.NFCListener;
+import com.example.nfcapplication.Models.TransactionRequestModel;
+import com.example.nfcapplication.R;
 import com.example.nfcapplication.Remote.RetrofitClient;
 import com.example.nfcapplication.Services.NFCService;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,100 +45,75 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         progressDialog = new ProgressDialog(this);
 
 
-       // if (nfcCapable()) return;
+        sendData();
+      //  if (nfcCapable()) return;
         nfcService = new NFCService(this, MainActivity.this::onTagRead);
         nfcService.onTagDetected(getIntent());
-         screenDisplay();
-      //  sendData();
+
         // TODO: Create an interface of SendData() and call it when the Tag is detected
         // sendTransactionNotification();
     }
 
-    private void sendTransactionNotification() {
-        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
-        Call<TransactionResponseModel> modelCall = retrofitClient.sendTransactionRequestNotification();
-
-        modelCall.enqueue(new Callback<TransactionResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<TransactionResponseModel> call, @NonNull Response<TransactionResponseModel> response) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, response.code() + "Failure Sending Message", Toast.LENGTH_LONG).show();
-                    System.out.println(response.code() + "Failure Sending Message");
-                }
-                TransactionResponseModel responseStatus = response.body();
-                //  Toast.makeText(MainActivity.this, response.code() + " Message Sent", Toast.LENGTH_LONG).show();
-                assert responseStatus != null;
-                Toast.makeText(MainActivity.this, responseStatus.getResponseMessage(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<TransactionResponseModel> call, @NonNull Throwable t) {
-            }
-        });
-    }
+//    private void sendTransactionNotification() {
+//        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
+//        Call<ApprovalResponse> modelCall = retrofitClient.sendTransactionRequestNotification();
+//
+//        modelCall.enqueue(new Callback<ApprovalResponse>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ApprovalResponse> call, @NonNull Response<ApprovalResponse> response) {
+//                if (!response.isSuccessful()) {
+//                    Toast.makeText(MainActivity.this, response.code() + "Failure Sending Message", Toast.LENGTH_LONG).show();
+//                    System.out.println(response.code() + "Failure Sending Message");
+//                }
+//                ApprovalResponse responseStatus = response.body();
+//                //  Toast.makeText(MainActivity.this, response.code() + " Message Sent", Toast.LENGTH_LONG).show();
+//                assert responseStatus != null;
+//                Toast.makeText(MainActivity.this, responseStatus.getIsApproved(), Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ApprovalResponse> call, @NonNull Throwable t) {
+//            }
+//        });
+//    }
 
     public void sendData() {
         IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
-        Call<TransactionDetailsModel> modelCall = retrofitClient.postTransactionDetails(createSampleTransactionDetails());
+        // Make a network request to the C# REST API
+        Call<TransactionRequestModel> modelCall = retrofitClient.postTransactionDetails(createSampleTransactionDetails());
 
-        modelCall.enqueue(new Callback<TransactionDetailsModel>() {
+        modelCall.enqueue(new Callback<TransactionRequestModel>() {
             @Override
-            public void onResponse(@NonNull Call<TransactionDetailsModel> call, @NonNull Response<TransactionDetailsModel> response) {
+            public void onResponse(@NonNull Call<TransactionRequestModel> call, @NonNull Response<TransactionRequestModel> response) {
+                if (response.isSuccessful()) {
 
-                if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    TransactionRequestModel approvalResponse = response.body();
+                    if (approvalResponse != null && approvalResponse.getApproved()) {
+                        screenDisplay("Approved.");
 
-                // TransactionDetailsModel responseStatus = response.body();
-                // Toast.makeText(MainActivity.this, response.code() + " Response", Toast.LENGTH_LONG).show();
-//                assert responseStatus != null;
-//                Toast.makeText(MainActivity.this, responseStatus.getStatus(), Toast.LENGTH_LONG).show();
-               // screenDisplay();
-                // printTransactionDetails(createSampleTransactionDetails());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<TransactionDetailsModel> call, @NonNull Throwable t) {
-                Log.d("onFailure: ", Objects.requireNonNull(t.getMessage()));
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void screenDisplay() {
-        final String[] responseMessage = {"Processing"}; // Default message if response is not successful
-        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
-        Call<TransactionResponseModel> modelCall = retrofitClient.TransactionResponse();
-        modelCall.enqueue(new Callback<TransactionResponseModel>() {
-            @Override
-            public void onResponse(@NonNull Call<TransactionResponseModel> call, @NonNull Response<TransactionResponseModel> response) {
-
-                if (!response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    // You can choose to handle the error here or keep the default message.
-                    // For now, I'm just setting the default message.
-                } else {
-                    TransactionResponseModel responseModel = response.body();
-                    if (responseModel != null) {
-                        responseMessage[0] = responseModel.getResponseMessage();
+                    } else {
+                        screenDisplay("Declined.");
                     }
+                } else {
+                    screenDisplay("Network Error.");
+                    System.err.println("Failed to get approval status.");
                 }
-                screenDisplay.setText(responseMessage[0]);
-                Toast.makeText(MainActivity.this, String.valueOf(response.code()) + responseMessage[0], Toast.LENGTH_SHORT).show();
             }
-
             @Override
-            public void onFailure(@NonNull Call<TransactionResponseModel> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "Error Processing Transaction", Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<TransactionRequestModel> call, @NonNull Throwable t) {
+                System.err.println("Network request failed: " + t.getMessage());
             }
         });
     }
 
+    private void screenDisplay(String display) {
 
-    // Simulate the TransactionDetailsModel with sample data
-    private TransactionDetailsModel createSampleTransactionDetails() {
-        TransactionDetailsModel transactionDetails = new TransactionDetailsModel();
+        screenDisplay.setText(display);
+    }
+
+    // Simulate the TransactionRequestModel with sample data
+    private TransactionRequestModel createSampleTransactionDetails() {
+        TransactionRequestModel transactionDetails = new TransactionRequestModel();
         transactionDetails.setName("Isaac");
         transactionDetails.setSurname("Newton");
         transactionDetails.setIDNumber("4301049898686098");
@@ -155,19 +127,14 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         return transactionDetails;
     }
 
-//    //
-//    -- Narrate the story mimicking the journey a user would
-//    //
-
-
-    private void printTransactionDetails(TransactionDetailsModel transactionDetails) {
+    private void printTransactionDetails(TransactionRequestModel transactionDetails) {
         Log.d("MainActivity", "Name: " + transactionDetails.getName());
         Log.d("MainActivity", "Surname: " + transactionDetails.getSurname());
         Log.d("MainActivity", "ID Number: " + transactionDetails.getIDNumber());
         Log.d("MainActivity", "Card Number: " + transactionDetails.getCardNumber());
         Log.d("MainActivity", "Account Number: " + transactionDetails.getAccountNumber());
         Log.d("MainActivity", "Expiry Date: " + transactionDetails.getExpiryDate());
-        Log.d("MainActivity", "Amount: " + TransactionDetailsModel.getAmount());
+        Log.d("MainActivity", "Amount: " + TransactionRequestModel.getAmount());
         Log.d("MainActivity", "CVV: " + transactionDetails.getCVV());
         Log.d("MainActivity", "PIN: " + transactionDetails.getPIN());
 
@@ -207,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
     @Override
     public void onTagRead(String text) {
         screenDisplay.setText(text);
-
     }
 
 }
