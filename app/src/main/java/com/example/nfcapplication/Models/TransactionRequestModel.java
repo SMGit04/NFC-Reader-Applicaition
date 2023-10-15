@@ -38,7 +38,6 @@ public class TransactionRequestModel {
 
     public TransactionRequestModel() {
     }
-    public TransactionRequestModel(String idNumber) {}
     public TransactionRequestModel(String name, String surname, String IDNumber, String merchantName, String cardNumber, String accountNumber, String expiryDate, String CVV, String PIN, boolean status) {
         this.name = name;
         this.surname = surname;

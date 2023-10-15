@@ -51,31 +51,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         nfcService.onTagDetected(getIntent());
 
         // TODO: Create an interface of SendData() and call it when the Tag is detected
-        // sendTransactionNotification();
     }
-
-//    private void sendTransactionNotification() {
-//        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
-//        Call<ApprovalResponse> modelCall = retrofitClient.sendTransactionRequestNotification();
-//
-//        modelCall.enqueue(new Callback<ApprovalResponse>() {
-//            @Override
-//            public void onResponse(@NonNull Call<ApprovalResponse> call, @NonNull Response<ApprovalResponse> response) {
-//                if (!response.isSuccessful()) {
-//                    Toast.makeText(MainActivity.this, response.code() + "Failure Sending Message", Toast.LENGTH_LONG).show();
-//                    System.out.println(response.code() + "Failure Sending Message");
-//                }
-//                ApprovalResponse responseStatus = response.body();
-//                //  Toast.makeText(MainActivity.this, response.code() + " Message Sent", Toast.LENGTH_LONG).show();
-//                assert responseStatus != null;
-//                Toast.makeText(MainActivity.this, responseStatus.getIsApproved(), Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<ApprovalResponse> call, @NonNull Throwable t) {
-//            }
-//        });
-//    }
 
     public void sendData() {
         IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
