@@ -30,15 +30,15 @@ public class TransactionRequestModel {
     @SerializedName("cvv")
     private String CVV;
 
-    @SerializedName("pin")
-    private String PIN;
+    @SerializedName("accountBalance")
+    private double accountBalance;
     @SerializedName("isApproved")
     boolean isApproved;
 
 
     public TransactionRequestModel() {
     }
-    public TransactionRequestModel(String name, String surname, String IDNumber, String merchantName, String cardNumber, String accountNumber, String expiryDate, String CVV, String PIN, boolean status) {
+    public TransactionRequestModel(String name, String surname, String IDNumber, String merchantName, String cardNumber, String accountNumber, String expiryDate, String CVV, double accountBalance, boolean status) {
         this.name = name;
         this.surname = surname;
         this.IDNumber = IDNumber;
@@ -47,7 +47,7 @@ public class TransactionRequestModel {
         this.accountNumber = accountNumber;
         this.expiryDate = expiryDate;
         this.CVV = CVV;
-        this.PIN = PIN;
+        this.accountBalance = accountBalance;
         this.isApproved = status;
     }
 
@@ -88,9 +88,9 @@ public class TransactionRequestModel {
         return CVV;
     }
 
-    public String getPIN() {
-        return PIN;
-    }
+//    public String getPIN() {
+//        return PIN;
+//    }
 
     public String getMerchantName() {
         return merchantName;
@@ -126,9 +126,9 @@ public class TransactionRequestModel {
         this.CVV = CVV;
     }
 
-    public void setPIN(String PIN) {
-        this.PIN = PIN;
-    }
+//    public void setPIN(String PIN) {
+//        this.PIN = PIN;
+//    }
 
     public void setApproved(boolean approved) {
         this.isApproved = approved;
@@ -138,4 +138,7 @@ public class TransactionRequestModel {
         return IDNumber;
     }
 
+    public boolean getIsApproved() {
+        return isApproved;
+    }
 }

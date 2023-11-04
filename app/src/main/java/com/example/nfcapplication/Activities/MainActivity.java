@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nfcapplication.Interfaces.IRetrofitClient;
 import com.example.nfcapplication.Interfaces.NFCListener;
+import com.example.nfcapplication.Models.ApprovalResponseModel;
 import com.example.nfcapplication.Models.TransactionRequestModel;
+import com.example.nfcapplication.Models.TransactionRequestResultModel;
 import com.example.nfcapplication.R;
 import com.example.nfcapplication.Remote.RetrofitClient;
 import com.example.nfcapplication.Services.NFCService;
@@ -44,39 +46,64 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         // Initialize the progressDialog
         progressDialog = new ProgressDialog(this);
 
-
+       // sendTransactionNotification();
         sendData();
       //  if (nfcCapable()) return;
         nfcService = new NFCService(this, MainActivity.this::onTagRead);
         nfcService.onTagDetected(getIntent());
 
+
         // TODO: Create an interface of SendData() and call it when the Tag is detected
+        // TODO: Code refator
+    }
+
+
+        private void sendTransactionNotification() {
+        IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
+        Call<TransactionRequestModel> modelCall = retrofitClient.sendTransactionRequestNotification();
+        //screenDisplay("Notification Sent \nProcessing");
+        modelCall.enqueue(new Callback<TransactionRequestModel>() {
+            @Override
+            public void onResponse(@NonNull Call<TransactionRequestModel> call, @NonNull Response<TransactionRequestModel> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, response.code() + "Failure Sending Message", Toast.LENGTH_LONG).show();
+                    System.out.println(response.code() + "Failure Sending Message");
+                }
+
+            }
+            @Override
+            public void onFailure(Call<TransactionRequestModel> call, Throwable t) {
+
+            }
+        });
     }
 
     public void sendData() {
         IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
         // Make a network request to the C# REST API
-        Call<TransactionRequestModel> modelCall = retrofitClient.postTransactionDetails(createSampleTransactionDetails());
+        ApprovalResponseModel approvalResponse;
+        TransactionRequestResultModel requestResultModel = new TransactionRequestResultModel();
+        Call<TransactionRequestResultModel> modelCall = retrofitClient.postTransactionDetails(requestResultModel);
 
-        modelCall.enqueue(new Callback<TransactionRequestModel>() {
+        modelCall.enqueue(new Callback<TransactionRequestResultModel>() {
             @Override
-            public void onResponse(@NonNull Call<TransactionRequestModel> call, @NonNull Response<TransactionRequestModel> response) {
+            public void onResponse(@NonNull Call<TransactionRequestResultModel> call, @NonNull Response<TransactionRequestResultModel> response) {
                 if (response.isSuccessful()) {
 
-                    TransactionRequestModel approvalResponse = response.body();
-                    if (approvalResponse != null && approvalResponse.getApproved()) {
+                    TransactionRequestResultModel approvalResponse = response.body();
+                    if (approvalResponse != null && approvalResponse.getIsApprovedMessage()) {
                         screenDisplay("Approved.");
 
                     } else {
                         screenDisplay("Declined.");
                     }
                 } else {
-                    screenDisplay("Network Error.");
+                    screenDisplay("Network Error."+ response.code());
                     System.err.println("Failed to get approval status.");
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<TransactionRequestModel> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<TransactionRequestResultModel> call, @NonNull Throwable t) {
                 System.err.println("Network request failed: " + t.getMessage());
             }
         });
@@ -87,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         screenDisplay.setText(display);
     }
 
+    private ApprovalResponseModel approvalResponseModel() {
+        ApprovalResponseModel approvalResponseModel = new ApprovalResponseModel();
+        approvalResponseModel.setApproved(approvalResponseModel.isApproved());
+        return approvalResponseModel;
+    }
     // Simulate the TransactionRequestModel with sample data
     private TransactionRequestModel createSampleTransactionDetails() {
         TransactionRequestModel transactionDetails = new TransactionRequestModel();
@@ -99,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         transactionDetails.setMerchantName("Pep");
         // transactionDetails.setAmount();
         transactionDetails.setCVV("987");
-        transactionDetails.setPIN("5667");
+       // transactionDetails.setPIN("5667");
         return transactionDetails;
     }
 
@@ -112,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         Log.d("MainActivity", "Expiry Date: " + transactionDetails.getExpiryDate());
         Log.d("MainActivity", "Amount: " + TransactionRequestModel.getAmount());
         Log.d("MainActivity", "CVV: " + transactionDetails.getCVV());
-        Log.d("MainActivity", "PIN: " + transactionDetails.getPIN());
+      //  Log.d("MainActivity", "PIN: " + transactionDetails.getPIN());
 
     }
 
