@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
     public void sendTransactionRequest() {
         IRetrofitClient retrofitClient = RetrofitClient.getRetrofit().create(IRetrofitClient.class);
 
-        TransactionRequestModel requestResultModel = new TransactionRequestModel();
         Call<TransactionRequestModel> modelCall = retrofitClient.sendTransactionRequestData(createSampleTransactionDetails());
         modelCall.enqueue(new Callback<TransactionRequestModel>() {
             @Override
