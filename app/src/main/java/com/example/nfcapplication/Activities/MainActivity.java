@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
 
 
         // TODO: Create an interface of SendData() and call it when the Tag is detected
-        // TODO: Code refator
     }
 
 
