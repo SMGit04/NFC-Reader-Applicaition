@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
                     System.out.println(response.code() + "Failure Sending Message");
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<TransactionRequestModel> call, @NonNull Throwable t) {
                 System.err.println("Connection request failed: " + t.getMessage());
@@ -86,10 +87,12 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
                         screenDisplay("Declined.");
                     }
                 } else {
-                    screenDisplay("Network Error " + response.message());
+                    screenDisplay("Declined.");
+                    // screenDisplay("Network Error " + response.message());
                     System.err.println("Failed to get approval status." + response.message());
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<TransactionRequestModel> call, @NonNull Throwable t) {
                 screenDisplay("Timeout\nDo you need more time?");
@@ -123,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         Log.d("MainActivity", "Amount: " + TransactionRequestModel.getAmount());
         Log.d("MainActivity", "CVV: " + transactionDetails.getCVV());
     }
+
     private boolean nfcCapable() {
         if (nfcAdapter == null) {
             Toast.makeText(this, "NFC is not supported on this device.", Toast.LENGTH_LONG).show();
@@ -137,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements NFCListener {
         }
         return false;
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

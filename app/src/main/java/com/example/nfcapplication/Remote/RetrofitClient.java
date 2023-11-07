@@ -24,7 +24,6 @@ public class RetrofitClient {
         if (retrofit == null)
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:5174/api/")
-                    //.addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(okHttpClient)
